@@ -5,9 +5,10 @@ void main(List<String> args) {
   JsonEncoder encoder = JsonEncoder.withIndent('  ');
 
   Map<String, dynamic> json = {};
-  args.forEach((email) {
+  args.skip(1).forEach((email) {
     json[email] = {
-      "password": "shitshit",
+      "password": args[0],
+      "name": "Haywood Jahblomy",
       "created": false
     };
   });
