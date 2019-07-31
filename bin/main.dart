@@ -24,7 +24,7 @@ class Creatazon {
     _ = Utils(_driver);
     print('Starting amazon OTP fetcher...');
 
-    await amazonOtp.start(this, args);
+    await amazonOtp.start(args);
 
     print('Loading accounts to create...');
     loadAccounts();
@@ -54,8 +54,8 @@ class Creatazon {
     await _driver.get('https://www.amazon.com/ap/register?showRememberMe=true&openid.pape.max_auth_age=0&openid.identity=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&pageId=usflex&openid.return_to=https%3A%2F%2Fwww.amazon.com%2Fgp%2Fyourstore%2Fhome%3Fie%3DUTF8%26action%3Dsign-out%26path%3D%252Fgp%252Fyourstore%252Fhome%26ref_%3Dnav_youraccount_signout%26signIn%3D1%26useRedirectOnSuccess%3D1&prevRID=6VXB3JMD8Z7FBYF51Z0E&openid.assoc_handle=usflex&openid.mode=checkid_setup&openid.ns.pape=http%3A%2F%2Fspecs.openid.net%2Fextensions%2Fpape%2F1.0&prepopulatedLoginId=&failedSignInCount=0&openid.claimed_id=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0%2Fidentifier_select&openid.ns=http%3A%2F%2Fspecs.openid.net%2Fauth%2F2.0&ubid=131-9962970-1381959');
     await (await _.getElement(By.id('ap_customer_name'))).sendKeys(name);
     await (await _.getElement(By.id('ap_email'))).sendKeys(email);
-    await (await _.getElement(By.id('ap_password'))).sendKeys(email);
-    await (await _.getElement(By.id('ap_password_check'))).sendKeys(email);
+    await (await _.getElement(By.id('ap_password'))).sendKeys(password);
+    await (await _.getElement(By.id('ap_password_check'))).sendKeys(password);
     await (await _.getElement(By.id('continue'))).click();
 
     sleep(Duration(milliseconds: 250));
@@ -76,8 +76,8 @@ class Creatazon {
       print('==============================');
       print('Type captcha below:');
 
-      await (await _.getElement(By.id('ap_password'))).sendKeys(email);
-      await (await _.getElement(By.id('ap_password_check'))).sendKeys(email);
+      await (await _.getElement(By.id('ap_password'))).sendKeys(password);
+      await (await _.getElement(By.id('ap_password_check'))).sendKeys(password);
 
       var line = stdin.readLineSync(encoding: Encoding.getByName('utf-8'));
       await (await _.getElement(By.id('auth-captcha-guess'))).sendKeys(line.trim());
@@ -125,6 +125,7 @@ class Creatazon {
     var verifyButton = await _.getElement(By.cssSelector('.a-button-inner .a-button-input'));
     await verifyButton.click();
 
+    accounts[email]['cookies'] = await _driver.cookies.all.map((cookie) => cookie.toJson()).toList();
     accounts[email]['created'] = true;
     accountsCreated++;
     saveAccounts();

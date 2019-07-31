@@ -11,7 +11,7 @@ class AmazonOTP {
   WebDriver _driver;
   RegExp _otpRegex = RegExp(r'\(OTP\): (\d{6})');
 
-  Future<void> start(Creatazon creatazon, List<String> args) async {
+  Future<void> start(List<String> args) async {
     _driver = await createDriver(
         uri: Uri.parse('http://localhost:4444/'), spec: WebDriverSpec.JsonWire);
     _ = Utils(_driver);
